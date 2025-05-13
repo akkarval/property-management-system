@@ -1,4 +1,4 @@
-package com.wipro.property_management.service.Implementations;
+package com.wipro.property_management.service.implementation;
 
 
 import com.wipro.property_management.converter.PropertyConverter;
@@ -16,18 +16,19 @@ import java.util.Optional;
 @Service
 public class PropertyServiceImpl implements PropertyService {
 
-    @Autowired
-    private PropertyRepository propertyRepository;
+    private final PropertyRepository propertyRepository;
+    private final  PropertyConverter propertyConverter;
 
     @Autowired
-    private PropertyConverter propertyConverter;
+    public PropertyServiceImpl(PropertyRepository propertyRepository, PropertyConverter propertyConverter){
+        this.propertyRepository = propertyRepository;
+        this.propertyConverter = propertyConverter;
+    }
 
     @Override
     public PropertyDTO saveProperty(PropertyDTO propertyDTO) {
 
-        System.out.println(propertyDTO);
 PropertyEntity pe = propertyConverter.convertDTOtoEntity(propertyDTO);
-        System.out.println(pe);
         pe = propertyRepository.save(pe);
         propertyDTO = propertyConverter.convertEntityToDTO(pe);
         return propertyDTO;
@@ -53,8 +54,6 @@ PropertyEntity pe = propertyConverter.convertDTOtoEntity(propertyDTO);
             PropertyEntity pe = propertyEntity.get();
             pe.setTitle(propertyDTO.getTitle());
             pe.setDescription(propertyDTO.getDescription());
-            pe.setOwnerName(propertyDTO.getOwnerName());
-            pe.setOwnerEmail(propertyDTO.getOwnerEmail());
             pe.setPrice(propertyDTO.getPrice());
             pe.setAddress(propertyDTO.getAddress());
             propertyRepository.save(pe);

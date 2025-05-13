@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name = "Property_Management_System_Log" value = "logs/app.log"/>
+
+    <!-- Define the console appender -->
+   <!-- <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+    <appender name = "FILE-ROLLING" class = "ch.qos.logback.core.rolling.RollingFileAppender">
+         <file>{$Property_Management_System_Log}</file>
+
+                <!-- Define rolling policy -->
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <!-- Log file name pattern with date -->
+                    <fileNamePattern>logs/archived/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                   <!-- each archived file, max size 10 MB-->
+                    <maxFileSize>10MB</maxFileSize>
+                   <!-- Max size Cap 20 GB, beyond that old archived files will get deleted-->
+                    <totalSizeCap>20GB</totalSizeCap>>
+                    <!-- Keep logs for 60 days -->
+                    <maxHistory>60</maxHistory>
+                </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %p %c{1} [%t] %m%n</pattern>
+        </encoder>-
+               <!-- <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                </encoder>-->
+            </appender>
+
+            <!-- Console appender -->
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+
+    <springProfile name = "local">
+        <root level = "DEBUG">
+            <appender-ref ref = "STDOUT" />
+        </root>
+    </springProfile>
+
+    <springProfile name = "dev">
+        <root level = "INFO">
+            <appender-ref ref = "FILE-ROLLING" />
+        </root>
+    </springProfile>
+
+    <springProfile name = "test | accept | prod">
+        <root level = "WARN">
+            <appender-ref ref = "FILE-ROLLING" />
+        </root>
+    </springProfile>
+         <!--    Set logging levels
+            <logger name="com.example" level="DEBUG"/>
+            <logger name="org.springframework" level="INFO"/>
+
+            Root logger
+            <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+                <appender-ref ref="FILE-ROLLING"/>
+            </root> -->
+
+        </configuration>
