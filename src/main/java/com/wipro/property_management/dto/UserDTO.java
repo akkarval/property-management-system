@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
