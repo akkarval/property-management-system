@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +20,12 @@ public class UserDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String userName;
+    @NotNull(message = "Password cannot be null")
+    @NotEmpty(message = "Password cannot be empty")
     private String password;
+    @NotNull(message = "User Email is mandatory")
+    @NotEmpty(message = "User Email cannot be empty")
+    @Size(min=5, max=50, message = "User Email should be between 5 and 50 characters")
     private String userEmail;
     private String phone;
 
